@@ -1,6 +1,8 @@
 import { getHardware } from "@/lib/hardware";
 import SearchBox from "@/components/SearchBox";
 
+export const revalidate = 0;
+
 export default async function CatalogPage() {
   const initialItems = await getHardware();
 
