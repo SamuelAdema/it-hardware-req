@@ -1,7 +1,4 @@
-import { Inter } from "next/font/google";
 import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   metadataBase: new URL("http://localhost:3000"),
@@ -21,7 +18,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} min-h-screen bg-slate-50 text-slate-900 antialiased`}>
+      <body className="min-h-screen bg-slate-50 text-slate-900 antialiased">
         <header className="bg-blue-900 text-white p-4">
           <nav className="mx-auto max-w-6xl flex gap-6 font-medium">
             <a href="/" className="hover:text-blue-200">Home</a>

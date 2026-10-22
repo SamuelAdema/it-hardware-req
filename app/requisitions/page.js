@@ -1,7 +1,8 @@
 import { getSession, signOut } from "@/lib/auth";
 
+export const dynamic = "force-dynamic";
+
 export default async function RequisitionsPage() {
-  // Page-level authorization check (defense in depth)
   const session = await getSession();
 
   return (
