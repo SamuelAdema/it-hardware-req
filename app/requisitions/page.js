@@ -1,6 +1,6 @@
 import { getSession, signOut } from "@/lib/auth";
 
-export const dynamic = "force-dynamic";
+export const instant = false;
 
 export default async function RequisitionsPage() {
   const session = await getSession();

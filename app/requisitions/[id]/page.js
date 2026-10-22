@@ -2,7 +2,7 @@ import { getSession } from "@/lib/auth";
 import { notFound, redirect } from "next/navigation";
 import StatusTracker from "@/components/StatusTracker";
 
-export const dynamic = "force-dynamic";
+export const instant = false;
 
 export default async function RequisitionDetailPage({ params }) {
   const session = await getSession();
