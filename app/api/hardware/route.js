@@ -1,6 +1,6 @@
 import { hardwareList } from "@/lib/hardware";
 
-export const revalidate = 0;
+export const instant = false;
 
 export async function GET(request) {
   const searchParams = request.nextUrl.searchParams;
