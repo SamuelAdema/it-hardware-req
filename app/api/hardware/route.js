@@ -1,5 +1,7 @@
 import { hardwareList } from "@/lib/hardware";
 
+export const revalidate = 0;
+
 export async function GET(request) {
   const searchParams = request.nextUrl.searchParams;
   const query = searchParams.get("q")?.toLowerCase();
