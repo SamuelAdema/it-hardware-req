@@ -1,14 +1,27 @@
+import { Inter } from "next/font/google";
 import "./globals.css";
 
+const inter = Inter({ subsets: ["latin"] });
+
 export const metadata = {
-  title: "IT Hardware Requisition",
-  description: "Request IT hardware for your department securely.",
+  metadataBase: new URL("http://localhost:3000"),
+  title: {
+    template: "%s | IT Hardware Requisition",
+    default: "IT Hardware Requisition Portal",
+  },
+  description: "Internal portal for requesting department hardware and tracking provisioning.",
+  openGraph: {
+    title: "IT Hardware Requisition",
+    description: "Request IT hardware for your department securely.",
+    siteName: "IT Hardware Requisition",
+    type: "website",
+  },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-slate-50 text-slate-900 antialiased">
+      <body className={`${inter.className} min-h-screen bg-slate-50 text-slate-900 antialiased`}>
         <header className="bg-blue-900 text-white p-4">
           <nav className="mx-auto max-w-6xl flex gap-6 font-medium">
             <a href="/" className="hover:text-blue-200">Home</a>
