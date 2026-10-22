@@ -2,6 +2,21 @@ import { getHardwareById } from "@/lib/hardware";
 import { notFound } from "next/navigation";
 import RequisitionForm from "@/components/RequisitionForm";
 
+// Prevents Next.js from failing while trying to statically pre-build the dynamic ID
+export const instant = false;
+
+export async function generateMetadata({ params }) {
+  const { id } = await params;
+  const item = await getHardwareById(id);
+  
+  if (!item) return { title: "Item Not Found" };
+  
+  return {
+    title: item.name,
+    description: `Order the ${item.name} (${item.category}) for $${item.price}.`,
+  };
+}
+
 export default async function HardwareDetailPage({ params }) {
   const { id } = await params;
   const item = await getHardwareById(id);
