@@ -12,10 +12,10 @@ export default async function RequisitionDetailPage({ params }) {
 
   const mockRequisition = {
     id: id,
-    hardwareId: "laptop-pro",
+    hardwareId: "thinkpad-x1",
     department: "Engineering",
-    cost: 1200,
-    submittedAt: new Date().toISOString(),
+    cost: 1450,
+    submittedAt: "2026-10-21T10:00:00.000Z",
     status: "Pending IT Approval",
   };
 
