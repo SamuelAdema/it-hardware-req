@@ -1,62 +1,57 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-export default function RequisitionForm() {
+export default function HardwareRequisition() {
   const [department, setDepartment] = useState("");
-  const [lastOrder, setLastOrder] = useState(null);
 
-  // 1. READ: Check for a saved sticky note when the page first loads
-  useEffect(() => {
-    const savedData = localStorage.getItem("hardwareRequest");
-    if (savedData) {
-      setLastOrder(JSON.parse(savedData)); // Convert text back to a JavaScript object
-    }
-  }, []);
-
-  // 2. WRITE: Save the sticky note when they submit the form
   function handleSubmit(event) {
-    event.preventDefault(); // Stop the page from reloading
+    event.preventDefault();
+    if (!department) return; 
     
+    // Save locally in the background
     const newRequest = { departmentName: department, status: "Pending" };
-    
-    // Save to the browser's local storage locker
     localStorage.setItem("hardwareRequest", JSON.stringify(newRequest));
     
-    // Update the screen immediately
-    setLastOrder(newRequest);
-    setDepartment(""); // Clear the input box
+    // Trigger a browser popup to confirm submission
+    alert(`Success! Your hardware request for the ${department} department has been submitted.`);
+    
+    // Clear the input field
+    setDepartment(""); 
   }
 
   return (
-    <div className="card">
-      <h3>Request Hardware</h3>
-      
-      <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-3">
-        <h3 className="font-semibold text-gray-800">Request Hardware</h3>
-  
-      <div className="flex gap-2">
-        <input 
-          type="text" 
-          placeholder="Enter Department (e.g. HR)" 
-          value={department}
-          onChange={(e) => setDepartment(e.target.value)} 
-          className="flex-1 rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
-        />
-      <button 
-        type="submit" 
-        className="rounded-md bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700"
-      >
+    <div className="max-w-3xl mx-auto p-6 md:p-10 bg-white border border-gray-200 rounded-lg shadow-sm mt-10">
+      <p className="text-xs font-bold tracking-wider text-blue-600 uppercase mb-2">
+        HARDWARE SPECIFICATION
+      </p>
+      <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+        ThinkPad X1 Carbon Gen 11
+      </h1>
+      <p className="text-gray-600 text-lg mb-6">
+        Category: Computers
+      </p>
+      <h2 className="text-2xl font-bold text-gray-900 mb-6">
+        Estimated Cost: $1450
+      </h2>
+
+      <div className="mt-8 pt-6 border-t border-gray-100">
+        <label className="block text-gray-900 font-bold mb-3">Request Hardware</label>
+        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+          <input 
+            type="text" 
+            placeholder="Enter Department (e.g. HR)" 
+            value={department}
+            onChange={(e) => setDepartment(e.target.value)} 
+            className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-gray-900"
+          />
+          <button 
+            type="submit" 
+            className="px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2"
+          >
             Submit Request
           </button>
-        </div>
-      </form>
-
-      {/* 3. DISPLAY: Show the saved data if it exists */}
-      {lastOrder && (
-        <div style={{ marginTop: "20px", color: "blue" }}>
-          <p>📋 You have a saved request for: {lastOrder.departmentName}</p>
-        </div>
-      )}
+        </form>
+      </div>
     </div>
   );
 }
