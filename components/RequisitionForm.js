@@ -31,14 +31,24 @@ export default function RequisitionForm() {
     <div className="card">
       <h3>Request Hardware</h3>
       
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-3">
+        <h3 className="font-semibold text-gray-800">Request Hardware</h3>
+  
+      <div className="flex gap-2">
         <input 
           type="text" 
           placeholder="Enter Department (e.g. HR)" 
           value={department}
           onChange={(e) => setDepartment(e.target.value)} 
+          className="flex-1 rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
         />
-        <button type="submit">Submit Request</button>
+      <button 
+        type="submit" 
+        className="rounded-md bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700"
+      >
+            Submit Request
+          </button>
+        </div>
       </form>
 
       {/* 3. DISPLAY: Show the saved data if it exists */}
