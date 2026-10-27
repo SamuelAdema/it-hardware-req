@@ -1,56 +1,59 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 
-export default function HardwareRequisition() {
+export default function RequisitionForm() {
   const [department, setDepartment] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   function handleSubmit(event) {
     event.preventDefault();
     if (!department) return; 
     
-    // Save locally in the background
+    // Save to local storage
     const newRequest = { departmentName: department, status: "Pending" };
     localStorage.setItem("hardwareRequest", JSON.stringify(newRequest));
     
-    // Trigger a browser popup to confirm submission
-    alert(`Success! Your hardware request for the ${department} department has been submitted.`);
-    
-    // Clear the input field
-    setDepartment(""); 
+    // Hide form and show success message
+    setIsSubmitted(true);
   }
 
   return (
-    <div className="max-w-3xl mx-auto p-6 md:p-10 bg-white border border-gray-200 rounded-lg shadow-sm mt-10">
-      <p className="text-xs font-bold tracking-wider text-blue-600 uppercase mb-2">
-        HARDWARE SPECIFICATION
-      </p>
-      <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-        ThinkPad X1 Carbon Gen 11
-      </h1>
-      <p className="text-gray-600 text-lg mb-6">
-        Category: Computers
-      </p>
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">
-        Estimated Cost: $1450
-      </h2>
+    <div className="mt-8 pt-6 border-t border-gray-200">
+      {!isSubmitted ? (
+        <>
+          <label className="block text-gray-900 font-bold mb-3">Request Hardware</label>
+          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+            <input 
+              type="text" 
+              placeholder="Enter Department (e.g. HR)" 
+              value={department}
+              onChange={(e) => setDepartment(e.target.value)} 
+              className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-gray-900"
+            />
+            <button 
+              type="submit" 
+              className="px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2"
+            >
+              Submit Request
+            </button>
+          </form>
+        </>
+      ) : (
+        <div className="p-4 bg-green-50 border border-green-200 rounded-md text-green-800">
+          <p className="font-bold text-lg mb-1">✅ Request Submitted!</p>
+          <p>Your hardware request for the <strong>{department}</strong> department has been saved.</p>
+        </div>
+      )}
 
-      <div className="mt-8 pt-6 border-t border-gray-100">
-        <label className="block text-gray-900 font-bold mb-3">Request Hardware</label>
-        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
-          <input 
-            type="text" 
-            placeholder="Enter Department (e.g. HR)" 
-            value={department}
-            onChange={(e) => setDepartment(e.target.value)} 
-            className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-gray-900"
-          />
-          <button 
-            type="submit" 
-            className="px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2"
-          >
-            Submit Request
-          </button>
-        </form>
+      {/* Back to Catalog Button */}
+      <div className="mt-6">
+        <Link 
+          href="/catalog" 
+          className="inline-block text-blue-600 hover:text-blue-800 font-medium transition-colors"
+        >
+          &larr; Back to Catalog
+        </Link>
       </div>
     </div>
   );
