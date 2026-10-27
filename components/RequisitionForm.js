@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function RequisitionForm({ hardwareName = "ThinkPad X1 Carbon Gen 11" }) {
@@ -48,6 +49,14 @@ export default function RequisitionForm({ hardwareName = "ThinkPad X1 Carbon Gen
           <p>Navigate to the My Requests page to view it.</p>
         </div>
       )}
+      <div className="mt-6">
+        <Link 
+          href="/catalog" 
+          className="inline-block text-blue-600 hover:text-blue-800 font-medium transition-colors"
+        >
+          &larr; Back to Catalog
+        </Link>
+      </div>
     </div>
   );
 }
