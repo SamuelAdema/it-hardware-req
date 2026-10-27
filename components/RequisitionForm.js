@@ -1,68 +1,52 @@
 "use client";
+import { useState, useEffect } from "react";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+export default function RequisitionForm() {
+  const [department, setDepartment] = useState("");
+  const [lastOrder, setLastOrder] = useState(null);
 
-export default function RequisitionForm({ hardwareId }) {
-  const [isPending, setIsPending] = useState(false);
-  const [error, setError] = useState(null);
-  const router = useRouter();
-
-  async function handleSubmit(event) {
-    event.preventDefault();
-    setIsPending(true);
-    setError(null);
-
-    const formData = new FormData(event.currentTarget);
-    const department = formData.get("department");
-
-    try {
-      const response = await fetch("/api/requisitions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ hardwareId, department }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to submit requisition");
-      }
-
-      const data = await response.json();
-      // Redirect to the tracking page for the new request
-      router.push(`/requisitions/${data.id}`);
-    } catch (err) {
-      setError(err.message);
-      setIsPending(false);
+  // 1. READ: Check for a saved sticky note when the page first loads
+  useEffect(() => {
+    const savedData = localStorage.getItem("hardwareRequest");
+    if (savedData) {
+      setLastOrder(JSON.parse(savedData)); // Convert text back to a JavaScript object
     }
+  }, []);
+
+  // 2. WRITE: Save the sticky note when they submit the form
+  function handleSubmit(event) {
+    event.preventDefault(); // Stop the page from reloading
+    
+    const newRequest = { departmentName: department, status: "Pending" };
+    
+    // Save to the browser's local storage locker
+    localStorage.setItem("hardwareRequest", JSON.stringify(newRequest));
+    
+    // Update the screen immediately
+    setLastOrder(newRequest);
+    setDepartment(""); // Clear the input box
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mt-6 border-t pt-6">
-      <h3 className="font-bold mb-4">Start Requisition</h3>
-      {error && <p className="text-red-600 text-sm mb-4">{error}</p>}
+    <div className="card">
+      <h3>Request Hardware</h3>
       
-      <div className="flex gap-4 items-end">
-        <div className="flex-1">
-          <label htmlFor="department" className="block text-sm font-medium text-slate-700 mb-1">
-            Department
-          </label>
-          <input
-            id="department"
-            name="department"
-            type="text"
-            required
-            placeholder="e.g., Engineering"
-            className="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-600 outline-none"
-          />
+      <form onSubmit={handleSubmit}>
+        <input 
+          type="text" 
+          placeholder="Enter Department (e.g. HR)" 
+          value={department}
+          onChange={(e) => setDepartment(e.target.value)} 
+        />
+        <button type="submit">Submit Request</button>
+      </form>
+
+      {/* 3. DISPLAY: Show the saved data if it exists */}
+      {lastOrder && (
+        <div style={{ marginTop: "20px", color: "blue" }}>
+          <p>📋 You have a saved request for: {lastOrder.departmentName}</p>
         </div>
-        <button
-          type="submit"
-          disabled={isPending}
-          className="bg-blue-600 text-white px-6 py-2 rounded font-medium hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {isPending ? "Submitting..." : "Submit Request"}
-        </button>
-      </div>
-    </form>
+      )}
+    </div>
   );
 }
