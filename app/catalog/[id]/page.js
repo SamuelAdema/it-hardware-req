@@ -32,7 +32,8 @@ export default async function HardwareDetailPage({ params }) {
       <p className="text-slate-600 mb-4">Category: {item.category}</p>
       <p className="text-2xl font-semibold text-slate-900 mb-6">Estimated Cost: ${item.price}</p>
       
-      <RequisitionForm hardwareId={id} />
+      {/* This is the fixed line! It now passes the actual product name to your form */}
+      <RequisitionForm hardwareName={item.name} />
     </section>
   );
 }

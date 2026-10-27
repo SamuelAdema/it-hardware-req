@@ -1,21 +1,30 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import StatusTracker from "@/components/StatusTracker"; 
 
 export default function RequisitionsPage() {
   const [requests, setRequests] = useState([]);
   const [trackingId, setTrackingId] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
     const localData = JSON.parse(localStorage.getItem("myRequests") || "[]");
     setRequests(localData);
   }, []);
 
+  function handleSignOut() {
+    document.cookie = "session_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    router.push("/login"); 
+  }
+
   return (
     <div className="max-w-4xl mx-auto p-8">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">My Hardware Requests</h1>
-        <button className="text-red-600 font-medium hover:underline">Sign Out</button>
+        <button onClick={handleSignOut} className="text-red-600 font-medium hover:underline">
+          Sign Out
+        </button>
       </div>
 
       <div className="flex flex-col gap-4">
@@ -45,7 +54,6 @@ export default function RequisitionsPage() {
                 </div>
               </div>
 
-              {/* Renders your live tracking component when clicked */}
               {trackingId === req.id && (
                 <StatusTracker 
                   requisition={{
